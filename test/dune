@@ -1,0 +1,4 @@
+(tests
+ (names tee_test)
+ (modules tee_test)
+ (libraries tee))
