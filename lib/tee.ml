@@ -1,11 +1,12 @@
 (* Tee: Test Equality Easily *)
 include Teetypes
 
-let test((expected: 'a), (testing: 'a), (test_str: string), (to_string: 'a -> string)): unit =
+(** Module for testing if two arbitrary types are equal to one another. 
+    @param expected     Expected value in our test. This is the value we expect. 
+    @param testing      Testing value in our test. This is the value we are testing.
+    @param test_str     String describing what we are testing.
+ *)
+let tee (type a) (module TeeAbstractType : TeeType with type t = a) ((expected: a), (testing: a), (test_str: string)) = 
     if expected = testing 
     then print_string("passed: " ^ test_str ^ "\n")
-    else failwith(test_str ^ " -> expected: " ^ to_string(expected) ^ " but got: " ^ to_string(testing))
-
-(* Allows for easy testing with predefined functions and models *)
-let tee (type a) (module TeeAbstractType : TeeType with type t = a) ((expected: a), (testing: a), (test_str: string)) = 
-    test(expected, testing, test_str, TeeAbstractType.to_string)
+    else failwith(test_str ^ " -> expected: " ^ TeeAbstractType.to_string(expected) ^ " but got: " ^ TeeAbstractType.to_string(testing))

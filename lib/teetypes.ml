@@ -1,31 +1,25 @@
-(* Tee: Test Equality Easily *)
+(** Signature for TeeTypes. *)
 module type TeeType = sig 
     type t
     val to_string: t -> string
 end
 
-let tee_string_of_list((list: 'a list), (to_string: 'a -> string)): string =
-    let string_list = List.map (fun i -> to_string(i)) list in "["^String.concat "; " string_list^"]"  
-
-let tee_string_of_option((opt: 'a option), (to_string: 'a -> string)): string =
-    match opt with | None -> "None" | Some(x: 'a) -> "Some " ^ to_string(x) 
-
-let tee_string_of_pair((pair: ('a * 'b)), (to_string_a: 'a -> string), (to_string_b: 'b -> string)): string =
-    match pair with (first, second) -> "(" ^ to_string_a(first) ^ ", " ^ to_string_b(second) ^ ")"
-
 module TeeList (Tee: TeeType) = struct 
     type t = Tee.t list
-    let to_string(x) = tee_string_of_list(x, Tee.to_string)
+    let to_string(x) = x |>
+        (fun list -> (let string_list = List.map (fun i -> Tee.to_string(i)) list in "["^String.concat "; " string_list^"]")) 
 end
 
 module TeeOption(Tee: TeeType) = struct
     type t = Tee.t option
-    let to_string(x) = tee_string_of_option(x, Tee.to_string)
+    let to_string(x) = x |>
+        (fun opt -> (match opt with | None -> "None" | Some(x: 'a) -> "Some " ^ Tee.to_string(x))) 
 end
 
 module TeePair (TeeA: TeeType) (TeeB: TeeType) = struct
     type t = TeeA.t * TeeB.t
-    let to_string(x) = tee_string_of_pair(x, TeeA.to_string, TeeB.to_string)
+    let to_string(x) = x |>
+        (fun pair -> (match pair with (first, second) -> "(" ^ TeeA.to_string(first) ^ ", " ^ TeeB.to_string(second) ^ ")"))
 end
 
 module TeeFloat = struct
