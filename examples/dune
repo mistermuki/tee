@@ -1,0 +1,4 @@
+(library
+ (name tee_example)
+ (modules testing_function custom_type)
+ (libraries tee))

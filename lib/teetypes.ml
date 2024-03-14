@@ -6,20 +6,17 @@ end
 
 module TeeList (Tee: TeeType) = struct 
     type t = Tee.t list
-    let to_string(x) = x |>
-        (fun list -> (let string_list = List.map (fun i -> Tee.to_string(i)) list in "["^String.concat "; " string_list^"]")) 
+    let to_string(list) = let string_list = List.map (fun i -> Tee.to_string(i)) list in "["^String.concat "; " string_list^"]" 
 end
 
 module TeeOption(Tee: TeeType) = struct
     type t = Tee.t option
-    let to_string(x) = x |>
-        (fun opt -> (match opt with | None -> "None" | Some(x: 'a) -> "Some " ^ Tee.to_string(x))) 
+    let to_string(opt) = match opt with | None -> "None" | Some(x: 'a) -> "Some " ^ Tee.to_string(x) 
 end
 
 module TeePair (TeeA: TeeType) (TeeB: TeeType) = struct
     type t = TeeA.t * TeeB.t
-    let to_string(x) = x |>
-        (fun pair -> (match pair with (first, second) -> "(" ^ TeeA.to_string(first) ^ ", " ^ TeeB.to_string(second) ^ ")"))
+    let to_string(pair) = match pair with (first, second) -> "(" ^ TeeA.to_string(first) ^ ", " ^ TeeB.to_string(second) ^ ")"
 end
 
 module TeeFloat = struct

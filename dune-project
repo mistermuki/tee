@@ -1,6 +1,7 @@
 (lang dune 3.14)
 
 (name tee)
+(version 79d25ca-dirty)
 
 (generate_opam_files true)
 
